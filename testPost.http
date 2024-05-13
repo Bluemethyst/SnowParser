@@ -1,0 +1,7 @@
+### GET request to example server
+POST http://localhost:9976/log
+Content-Type: text/plain
+
+this is the log text!
+
+###
