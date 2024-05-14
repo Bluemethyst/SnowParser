@@ -15,7 +15,7 @@ fun Application.configureRouting() {
         post("/log") {
             val text = call.receiveText()
             val parsed = parseLog(text)
-            call.respondText(parsed)
+            call.respondText(parsed.toString())
         }
         staticResources("/", "static") {
             default("/favicon.ico")
