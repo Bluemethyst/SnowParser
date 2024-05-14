@@ -1,17 +1,18 @@
 package dev.bluemethyst.logs
 
+// Define a data class for Minecraft logs
 data class MinecraftLog(
-    val timestamp: String,
-    val level: String,
-    val errors: List<String>,
-    val errorCount: Int,
-    val warnings: List<String>,
-    val warningCount: Int,
-    val problematicClasses: List<String>?
+    val timestamp: String, // Timestamp of the log
+    val errors: List<String>, // List of error messages
+    val errorCount: Int, // Count of error messages
+    val warnings: List<String>, // List of warning messages
+    val warningCount: Int, // Count of warning messages
+    val problematicClasses: List<String>? // List of problematic classes (optional)
 )
 
-// https://github.com/Layers-of-Railways/bot/tree/main/src/logProviders
-// https://mclo.gs/SJKlU1M
+
+// fix https://chatgpt.com/c/7ac5ca2b-fb9c-4fce-8517-d186e3db0498
+
 
 fun parseLog(log: String): Any {
     if (log.isEmpty()) {
@@ -21,33 +22,25 @@ fun parseLog(log: String): Any {
     val errors = mutableListOf<String>()
     val warnings = mutableListOf<String>()
     val problematicClasses = mutableListOf<String>()
+    var logs: MinecraftLog? = null
 
-    // Adjusted regex to match the log format: [12:41:21] [main/INFO]: <TEXTDATA>
-    val regex = """\[(.*?)] \[(.*?)/(.*?)]: (.*)""".toRegex()
-
-    var thread = ""
-    var message = ""
+    val logPattern = Regex("""\[(.*?)\] \[(.*?)/(.*?)](.*?): (.*?)$""")
 
     for (line in lines) {
-        val matchResult = regex.find(line)
+        val matchResult = logPattern.find(line)
         if (matchResult != null) {
-            val destructured = matchResult.destructured
-            thread = destructured.component2()
-            val level = destructured.component3()
-            message = destructured.component4()
-
-            // Add logic here to identify problematic classes
-            // and add them to the problematicClasses list
+            val (timestamp, thread, level, source, message) = matchResult.destructured
 
             when (level) {
                 "ERROR" -> errors.add(message)
                 "WARN" -> warnings.add(message)
             }
+
+            val errorCount = errors.size
+            val warningCount = warnings.size
+
+            logs = MinecraftLog(timestamp, errors, errorCount, warnings, warningCount, problematicClasses)
         }
     }
-
-    val errorCount = errors.size
-    val warningCount = warnings.size
-
-    return MinecraftLog(thread, message, errors, errorCount, warnings, warningCount, problematicClasses)
+    return logs ?: "No logs were parsed, internal error?"
 }
