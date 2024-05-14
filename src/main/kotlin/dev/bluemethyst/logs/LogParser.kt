@@ -11,6 +11,7 @@ data class MinecraftLog(
 )
 
 // https://github.com/Layers-of-Railways/bot/tree/main/src/logProviders
+// https://mclo.gs/SJKlU1M
 
 fun parseLog(log: String): Any {
     if (log.isEmpty()) {
@@ -22,7 +23,7 @@ fun parseLog(log: String): Any {
     val problematicClasses = mutableListOf<String>()
 
     // Adjusted regex to match the log format: [12:41:21] [main/INFO]: <TEXTDATA>
-    val regex = """\[(.*?)\] \[(.*?)/(.*?)\]: (.*)""".toRegex()
+    val regex = """\[(.*?)] \[(.*?)/(.*?)]: (.*)""".toRegex()
 
     var thread = ""
     var message = ""
