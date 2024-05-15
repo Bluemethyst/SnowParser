@@ -22,6 +22,7 @@ fun Application.configureRouting() {
             val code = call.parameters["code"]
             if (code != null) {
                 // handle code shit
+                // this shit https://github.com/lucko/paste?tab=readme-ov-file#pastesdev-api
             } else {
                 call.respondText(gson.toJson(mapOf("error" to "No code provided, usage is /log/{code}")))
             }
