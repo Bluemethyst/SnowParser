@@ -20,18 +20,21 @@ data class MinecraftLog(
 // https://mclo.gs/SJKlU1M 3 part
 // https://mclo.gs/BD2Sqg2 2 part
 
-fun parseLog(log: String): Any {
+fun parseLog(log: String, uploadLog: Boolean = true): Any {
     if (log.isEmpty()) {
         return "No log data provided."
     }
-    val uploadCode = uploadLog(log)
+    val uploadCode: String? = null
+    if (uploadLog) {
+        uploadLog(log).toString()
+    }
     val lines = log.split("\n")
     val errors = mutableListOf<String>()
     val warnings = mutableListOf<String>()
     val potentialProblematicClasses = mutableListOf<String>()
     val logs: MinecraftLog?
     var timestamp = ""
-    var mods: Int = 0
+    var mods = 0
     var errorCount = 0
     var warningCount = 0
     val logPattern = Regex("""\[(.*?)\] \[(.*?)/(.*?)](.*?): (.*?)$""")
@@ -64,7 +67,7 @@ fun parseLog(log: String): Any {
             potentialProblematicClasses.add(line)
         }
     }
-    logs = MinecraftLog(uploadCode.toString(), timestamp, mods, warningCount, errorCount, warnings, errors, potentialProblematicClasses, null)
+    logs = MinecraftLog(uploadCode, timestamp, mods, warningCount, errorCount, warnings, errors, potentialProblematicClasses, null)
     return if (logs.errors.isEmpty() && logs.warnings.isEmpty() && logs.mods == 0) {
         gson.toJson(mapOf("error" to "Log seems invalid. If you believe this is an error, please create an issue on the GitHub repository."))
     } else {

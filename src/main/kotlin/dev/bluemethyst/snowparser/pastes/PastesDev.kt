@@ -1,17 +1,18 @@
 package dev.bluemethyst.snowparser.pastes
 
 import dev.bluemethyst.snowparser.gson
+import dev.bluemethyst.snowparser.logs.parseLog
 import dev.bluemethyst.snowparser.net.*
 import io.ktor.http.*
 
 data class ResponseData(val key: String)
 
-fun getLog(code: String): Any {
+fun getLog(code: String): Any? {
     val response = get("https://api.pastes.dev/$code")
     return if (response.statusCode() != 200) {
         gson.toJson(mapOf("error" to "Invalid code provided, log may not exist. Usage is /log/{code}"))
     } else {
-        response.body()
+        parseLog(response.body(), false)
     }
 }
 
