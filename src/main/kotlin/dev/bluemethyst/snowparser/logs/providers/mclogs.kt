@@ -8,7 +8,8 @@ fun handleMclogs(text: String): Any {
     try {
         val r = get("https://api.mclo.gs/1/raw/$text")
         return parseLog(r.body())
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+        println(e)
         return gson.toJson(mapOf("error" to "Failed to fetch log, make sure the paste exists and is public or that you have inputted valid data."))
     }
 }

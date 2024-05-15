@@ -1,8 +1,10 @@
 package dev.bluemethyst.snowparser.logs
 
 import dev.bluemethyst.snowparser.gson
+import dev.bluemethyst.snowparser.pastes.uploadLog
 
 data class MinecraftLog(
+    val uploadCode: String?,
     val timestamp: String,
     val mods: Int,
     val warningCount: Int,
@@ -22,6 +24,7 @@ fun parseLog(log: String): Any {
     if (log.isEmpty()) {
         return "No log data provided."
     }
+    val uploadCode = uploadLog(log)
     val lines = log.split("\n")
     val errors = mutableListOf<String>()
     val warnings = mutableListOf<String>()
@@ -61,7 +64,7 @@ fun parseLog(log: String): Any {
             potentialProblematicClasses.add(line)
         }
     }
-    logs = MinecraftLog(timestamp, mods, warningCount, errorCount, warnings, errors, potentialProblematicClasses, null)
+    logs = MinecraftLog(uploadCode.toString(), timestamp, mods, warningCount, errorCount, warnings, errors, potentialProblematicClasses, null)
     return if (logs.errors.isEmpty() && logs.warnings.isEmpty() && logs.mods == 0) {
         gson.toJson(mapOf("error" to "Log seems invalid. If you believe this is an error, please create an issue on the GitHub repository."))
     } else {

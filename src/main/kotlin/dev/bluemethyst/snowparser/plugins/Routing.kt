@@ -2,6 +2,8 @@ package dev.bluemethyst.snowparser.plugins
 
 import dev.bluemethyst.snowparser.gson
 import dev.bluemethyst.snowparser.logs.checkInputType
+import dev.bluemethyst.snowparser.pastes.getLog
+import dev.bluemethyst.snowparser.pastes.uploadLog
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
@@ -21,8 +23,7 @@ fun Application.configureRouting() {
         get("/log/{code}") {
             val code = call.parameters["code"]
             if (code != null) {
-                // handle code shit
-                // this shit https://github.com/lucko/paste?tab=readme-ov-file#pastesdev-api
+                call.respondText(getLog(code).toString())
             } else {
                 call.respondText(gson.toJson(mapOf("error" to "No code provided, usage is /log/{code}")))
             }
