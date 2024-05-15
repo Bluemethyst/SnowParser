@@ -1,9 +1,12 @@
-package dev.bluemethyst
+package dev.bluemethyst.snowparser
 
-import dev.bluemethyst.plugins.configureRouting
+import com.google.gson.Gson
+import dev.bluemethyst.snowparser.plugins.configureRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+
+val gson: Gson = Gson()
 
 fun main() {
     embeddedServer(

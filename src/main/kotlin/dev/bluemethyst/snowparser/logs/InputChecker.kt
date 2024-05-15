@@ -1,6 +1,6 @@
-package dev.bluemethyst.logs
+package dev.bluemethyst.snowparser.logs
 
-import dev.bluemethyst.logs.providers.*
+import dev.bluemethyst.snowparser.logs.providers.*
 
 fun checkInputType(input: String): Any {
     val final: Any

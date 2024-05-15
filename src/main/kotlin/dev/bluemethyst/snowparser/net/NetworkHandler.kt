@@ -1,4 +1,4 @@
-package dev.bluemethyst.net
+package dev.bluemethyst.snowparser.net
 
 import java.net.URI
 import java.net.http.HttpClient

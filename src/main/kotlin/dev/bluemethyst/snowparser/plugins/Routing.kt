@@ -1,6 +1,7 @@
-package dev.bluemethyst.plugins
+package dev.bluemethyst.snowparser.plugins
 
-import dev.bluemethyst.logs.checkInputType
+import dev.bluemethyst.snowparser.gson
+import dev.bluemethyst.snowparser.logs.checkInputType
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
@@ -17,9 +18,16 @@ fun Application.configureRouting() {
             val parsed = checkInputType(text)
             call.respondText(parsed.toString())
         }
+        get("/log/{code}") {
+            val code = call.parameters["code"]
+            if (code != null) {
+                // handle code shit
+            } else {
+                call.respondText(gson.toJson(mapOf("error" to "No code provided, usage is /log/{code}")))
+            }
+        }
         staticResources("/", "static") {
             default("/favicon.ico")
         }
-
     }
 }
