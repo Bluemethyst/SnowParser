@@ -24,9 +24,9 @@ fun parseLog(log: String, uploadLog: Boolean = true): Any {
     if (log.isEmpty()) {
         return "No log data provided."
     }
-    val uploadCode: String? = null
+    var uploadCode: String? = null
     if (uploadLog) {
-        uploadLog(log).toString()
+        uploadCode = uploadLog(log).toString()
     }
     val lines = log.split("\n")
     val errors = mutableListOf<String>()

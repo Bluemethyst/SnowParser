@@ -23,7 +23,6 @@ fun uploadLog(log: String): Any {
     )
     val response = post("https://api.pastes.dev/post", log, headers)
     if (response?.statusCode() == 200 || response?.statusCode() == 201) {
-        println(response.body())
         val data = gson.fromJson(response.body(), ResponseData::class.java)
         return data.key
     } else {
